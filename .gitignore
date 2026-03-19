@@ -7,3 +7,4 @@ hf_peft_results/
 __pycache__/
 *.pyc
 venv/
+app/hugging_peft_model_merged/

@@ -22,7 +22,13 @@ project/
 ├── groupname_huggingface.ipynb       # HuggingFace Trainer — Full FT + LoRA
 ├── groupname_pytorch.ipynb           # Manual PyTorch loop — Full FT + LoRA
 ├── peft_implementation.py            # Custom LoRA implementation
-└── requirements.txt
+├── requirements.txt                  # Full dependencies for training
+└── app/
+    ├── app.py                        # FastAPI inference API
+    ├── Dockerfile
+    ├── requirements-inference.txt    # Minimal dependencies for inference only
+    └── templates/
+        └── index.html                # Web UI
 ```
 
 ---
@@ -66,6 +72,13 @@ Run `groupname_huggingface.ipynb` top to bottom. Trains and saves:
 - `./hugging_full_ft_model`
 - `./hugging_peft_model`
 
+After training, merge and save the LoRA weights for use in the inference API:
+```python
+merged_model = peft_model.merge_and_unload()
+merged_model.save_pretrained("./app/hugging_peft_model_merged")
+tokenizer.save_pretrained("./app/hugging_peft_model_merged")
+```
+
 **Manual PyTorch:**
 Make sure `peft_implementation.py` is in the same directory, then run `groupname_pytorch.ipynb` top to bottom. Trains and saves:
 - `./pytorch_full_ft_model`
@@ -92,6 +105,75 @@ from google.colab import drive
 drive.mount('/content/drive')
 train_df = parse_conll("/content/drive/MyDrive/Hinglish_train_14k_split_conll.txt")
 ```
+
+---
+
+## Docker — Inference API
+
+The project includes a FastAPI inference API with a web UI, served via Docker using the merged HuggingFace LoRA model.
+
+### Prerequisites
+- [Docker](https://docs.docker.com/get-docker/) installed and running
+- The merged model folder `app/hugging_peft_model_merged/` present (produced by the merge step in Step 2 above)
+
+> **Note:** Model files are excluded from git via `.gitignore` due to their size (~1GB). You must train and merge the model locally before building the Docker image.
+
+### Step 1 — Build the image
+From the `app/` directory:
+```bash
+cd app
+docker build -t hinglish-sentiment-api .
+```
+
+### Pull from DockerHub (instead of step 1 - recommended)
+```bash
+docker pull mgkh/hinglish-sentiment-api:latest
+docker run -p 8000:8000 yourusername/hinglish-sentiment-api:latest
+```
+
+### Step 2 — Run the container
+```bash
+docker run -p 8000:8000 hinglish-sentiment-api
+```
+
+Open `http://localhost:8000` in your browser to use the web UI.
+
+### Step 3 — Test the API
+
+**Web UI:**
+Open `http://localhost:8000` — enter a Hinglish sentence and click Analyze.
+
+**Using curl:**
+```bash
+curl -X POST "http://localhost:8000/predict" \
+     -H "Content-Type: application/json" \
+     -d '{"text": "yaar aaj ka din bahut accha tha"}'
+```
+
+**Expected response:**
+```json
+{
+  "text": "yaar aaj ka din bahut accha tha",
+  "sentiment": "positive",
+  "confidence": 0.915
+}
+```
+
+**Health check:**
+```bash
+curl http://localhost:8000/health
+```
+
+**Swagger UI (API docs):**
+Open `http://localhost:8000/docs`
+
+### API Endpoints
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/` | Web UI |
+| GET | `/health` | Health check |
+| POST | `/predict` | Predict sentiment for a Hinglish sentence |
+| GET | `/docs` | Swagger UI |
 
 ---
 
