@@ -1,0 +1,9 @@
+hugging_full_ft_model/
+hugging_peft_model/
+pytorch_full_ft_model/
+pytorch_peft_model/
+hf_full_ft_results/
+hf_peft_results/
+__pycache__/
+*.pyc
+venv/
