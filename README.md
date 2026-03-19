@@ -128,7 +128,7 @@ docker build -t hinglish-sentiment-api .
 ### Pull from DockerHub (instead of step 1 - recommended)
 ```bash
 docker pull mgkh/hinglish-sentiment-api:latest
-docker run -p 8000:8000 yourusername/hinglish-sentiment-api:latest
+docker run -p 8000:8000 mgkh/hinglish-sentiment-api:latest
 ```
 
 ### Step 2 — Run the container
@@ -137,6 +137,7 @@ docker run -p 8000:8000 hinglish-sentiment-api
 ```
 
 Open `http://localhost:8000` in your browser to use the web UI.
+You will a prompt window. Input your hinglish text and press Analyze.
 
 ### Step 3 — Test the API
 
