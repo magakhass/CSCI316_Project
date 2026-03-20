@@ -90,6 +90,7 @@ Make sure `peft_implementation.py` is in the same directory, then run `hinglish_
 Evaluation runs automatically at the end of each training notebook:
 - **Part 3** — Classification report (precision, recall, F1) on the validation set
 - **Part 4** — Predictions on the unlabelled test set + sample sentence inference
+- **Part 5** — Custom cultural evaluation (DFS)
 
 ---
 
@@ -120,14 +121,14 @@ The project includes a FastAPI inference API with a web UI, served via Docker us
 
 > **Note:** Model files are excluded from git via `.gitignore` due to their size (~1GB). You must train and merge the model locally before building the Docker image.
 
-### Step 1 — Build the image
+### Step 1 — Build the image (requires the hugging_peft_model_merged folder)
 From the `app/` directory:
 ```bash
 cd app
 docker build -t hinglish-sentiment-api .
 ```
 
-### Pull from DockerHub (instead of step 1 - recommended)
+### Pull from DockerHub (instead of step 1 - recommended, already has the needed folder)
 ```bash
 docker pull mgkh/hinglish-sentiment-api:latest
 docker run -p 8000:8000 mgkh/hinglish-sentiment-api:latest
