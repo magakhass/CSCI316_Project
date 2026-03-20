@@ -1,6 +1,8 @@
 # Hinglish Sentiment Analysis
 Code-switched Hinglish sentiment classification using XLM-R, comparing Full Fine-Tuning vs PEFT/LoRA across two frameworks: HuggingFace Trainer and manual PyTorch.
 
+Patwa, P. (2020) “SemEval-2020 Task 9: Overview of Sentiment Analysis of Code-Mixed Tweets”. Zenodo. doi:10.5281/zenodo.3974927.
+
 ---
 
 ## Dataset
