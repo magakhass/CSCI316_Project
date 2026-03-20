@@ -21,8 +21,8 @@ Place all three files in the project root directory.
 ```
 project/
 ├── preprocessing.ipynb               # Data loading, normalization, tokenization
-├── groupname_huggingface.ipynb       # HuggingFace Trainer — Full FT + LoRA
-├── groupname_pytorch.ipynb           # Manual PyTorch loop — Full FT + LoRA
+├── hinglish_sentiment_huggingface.ipynb       # HuggingFace Trainer — Full FT + LoRA
+├── hinglish_sentiment_pytorch.ipynb           # Manual PyTorch loop — Full FT + LoRA
 ├── peft_implementation.py            # Custom LoRA implementation
 ├── requirements.txt                  # Full dependencies for training
 └── app/
@@ -70,7 +70,7 @@ Run `preprocessing.ipynb` top to bottom. This will:
 Run either or both training notebooks. Both load from the saved splits produced in Step 1.
 
 **HuggingFace Trainer:**
-Run `groupname_huggingface.ipynb` top to bottom. Trains and saves:
+Run `hinglish_sentiment_huggingface.ipynb` top to bottom. Trains and saves:
 - `./hugging_full_ft_model`
 - `./hugging_peft_model`
 
@@ -82,7 +82,7 @@ tokenizer.save_pretrained("./app/hugging_peft_model_merged")
 ```
 
 **Manual PyTorch:**
-Make sure `peft_implementation.py` is in the same directory, then run `groupname_pytorch.ipynb` top to bottom. Trains and saves:
+Make sure `peft_implementation.py` is in the same directory, then run `hinglish_sentiment_pytorch.ipynb` top to bottom. Trains and saves:
 - `./pytorch_full_ft_model`
 - `./pytorch_peft_model`
 
@@ -100,7 +100,7 @@ Evaluation runs automatically at the end of each training notebook:
 ```python
 !pip install peft sentencepiece accelerate -q
 ```
-3. In `groupname_huggingface.ipynb`, change `bf16=True` to `fp16=True` if using a free tier T4 GPU
+3. In `hinglish_sentiment_huggingface.ipynb`, change `bf16=True` to `fp16=True` if using a free tier T4 GPU
 4. Update file paths in `preprocessing.ipynb` if loading from Google Drive:
 ```python
 from google.colab import drive
